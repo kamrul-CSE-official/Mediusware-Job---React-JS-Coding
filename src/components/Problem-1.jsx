@@ -1,6 +1,48 @@
 import React, { useState } from "react";
 
 const Problem1 = () => {
+    const [show, setShow] = useState("all");
+    const [data, setData] = useState([]);
+    const [reserveData, setReserveData] = useState([]);
+
+    const handleInputData = (val) => {
+      val.preventDefault();
+      const form = val.target;
+      const inputName = form.inputName.value;
+      const inputStatus = form.inputStatus.value;
+      setData([...data, { name: inputName, status: inputStatus }]);
+      setReserveData([...data, { name: inputName, status: inputStatus }]);
+
+      form.reset();
+    };
+
+    const handleClick = (click) => {
+      setShow(click);
+      if (click === "all") {
+        let active = reserveData.filter((item) => item.status === "Active");
+        let completed = reserveData.filter(
+          (item) => item.status === "Completed"
+        );
+        let others = reserveData.filter(
+          (item) => item.status !== "Active" && item.status !== "Completed"
+        );
+        setData([...active, ...completed, ...others]);
+      } else if (click === "active") {
+        let active = reserveData.filter((item) => item.status === "Active");
+        setData([...active]);
+      } else if (click === "completed") {
+        let completed = reserveData.filter(
+          (item) => item.status === "Completed"
+        );
+        setData([...completed]);
+      } else {
+        let others = reserveData.filter(
+          (item) => item.status !== "Active" && item.status !== "Completed"
+        );
+        setData([...others]);
+      }
+    };
+
   return (
     <div className="container">
       <div className="row justify-content-center mt-5">
